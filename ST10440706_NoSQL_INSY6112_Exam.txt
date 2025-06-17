@@ -1,0 +1,11 @@
+// Q.4.1 create database
+use clients_ST10440706
+
+// Q.4.2 create collection and data
+db.clients.insertMany([{ClientName: "Debbie", ClientSurname: "Theart", ClientDOB: "1980-03-17"},{ClientName: "Thomas", ClientSurname: "Duncan", ClientDOB: "1976-08-12"}])
+
+// Q.4.2 getting a list of all the notes in the collection
+db.clients.find().pretty()
+
+// Q.4.3 query clients born after 1979-01-12
+db.clients.find({"ClientDOB":{$gt: "1979-01-12"}})

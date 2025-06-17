@@ -1,0 +1,51 @@
+CREATE DATABASE Tutorials_ST10440706;
+USE Tutorials_ST10440706;
+
+-- Q.3.1 create Student table
+CREATE TABLE Student (
+	StudentID INT AUTO_INCREMENT PRIMARY KEY,
+    StudentName VARCHAR(50) NOT NULL,
+    StudentSurname VARCHAR(50) NOT NULL,
+    StudentNumber INT NOT NULL
+);
+
+-- Q.3.2 Create Lecturer table
+CREATE TABLE Lecturer(
+	LecturerID INT AUTO_INCREMENT PRIMARY KEY,
+    LecturerName VARCHAR(50) NOT NULL,
+    LecturerSurname VARCHAR(50) NOT NULL
+);
+
+-- Q.3.3 create Tutorial table
+CREATE TABLE Tutorial (
+	TutorialID INT AUTO_INCREMENT PRIMARY KEY,
+    StudentID INT,
+    LecturerID INT,
+    TutorialDate DATE,
+    TutorialTime TIME,
+    TutorialDuration INT,
+    FOREIGN KEY (StudentID) REFERENCES Student(StudentID),
+    FOREIGN KEY (LecturerID) REFERENCES Lecturer(LecturerID)
+);
+
+-- Q.3.4 insert data
+INSERT INTO Student(StudentName, StudentSurname, StudentNumber) VALUES ("Debbie","Theart", 123456),("Thomas","Duncan", 654321);
+INSERT INTO Lecturer(LecturerName, LecturerSurname) VALUES ("Zintle","Nukani"),("Ravi","Maharaj");
+INSERT INTO Tutorial(StudentID, LecturerID, TutorialDate, TutorialTime, TutorialDuration) VALUES (1, 2, '2025-01-15', '9:00', 180),(2, 2, '2025-01-18', '15:00', 240),(1, 1, '2025-01-20', '10:00', 180),(1, 2, '2025-01-21', '11:00', 180);
+
+-- Q.3.5 query scheduled tutorial
+SELECT TutorialDate FROM Tutorial WHERE TutorialDate BETWEEN '2025-01-16' AND '2025-01-20';
+
+-- Q.3.6 query student names, surnames, number of tutorials and sort
+SELECT st.StudentName, st.StudentSurname, COUNT(tu.TutorialID) AS NumOfTutorials
+FROM Student st
+LEFT JOIN Tutorial tu ON st.StudentID = tu.StudentID
+GROUP BY st.StudentID
+ORDER BY NumOfTutorials DESC;
+
+-- Q.3.7 create a view of students who booked lecturerID 2
+CREATE VIEW studentswhobooked AS
+SELECT StudentName, StudentSurname FROM Tutorial t
+JOIN Student s ON t.StudentID = s.StudentID
+WHERE LecturerID = 2
+ORDER BY s.StudentSurname ASC;
